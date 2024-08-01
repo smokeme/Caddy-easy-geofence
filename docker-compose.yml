@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./shared:/usr/share/GeoIP
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_logs:/var/log/caddy
+      - ./html:/var/www/html
+    ports:
+      - "80:80"
+
+volumes:
+  caddy_logs:

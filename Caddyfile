@@ -1,0 +1,25 @@
+{
+  auto_https off
+  
+      log {
+        level DEBUG
+    }
+}
+
+:80 {
+  @mygeofilter {
+    maxmind_geolocation {
+      db_path "/usr/share/GeoIP/GeoLite2-Country.mmdb"
+      allow_countries KW 
+    }
+  }
+  error @mygeofilter 403
+  
+  handle @mygeofilter {
+    reverse_proxy host.docker.internal:8080
+  }
+
+  handle {
+    respond "Not Found" 404
+  }
+}
